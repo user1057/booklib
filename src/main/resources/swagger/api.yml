@@ -1,34 +1,110 @@
-# API-first development with OpenAPI
-# This file will be used at compile time to generate Spring-MVC endpoint stubs using openapi-generator
-openapi: '3.0.1'
+openapi: 3.0.2
 info:
-  title: 'booklib'
-  version: 0.0.1
-servers:
-  - url: http://localhost:8080/api
-    description: Development server
-  - url: https://localhost:8080/api
-    description: Development server with TLS Profile
-paths: {}
-components:
-  responses:
-    Problem:
-      description: error occurred - see status code and problem object for more information.
-      content:
-        'application/problem+json':
+  title: Booklib
+  version: 1.0.0
+paths:
+  /page:
+    get:
+      parameters:
+        - name: isbn
+          description: ''
           schema:
-            $ref: 'https://opensource.zalando.com/problem/schema.yaml#/Problem'
-
+            type: string
+          in: query
+          required: true
+        - name: page
+          description: ''
+          schema:
+            type: integer
+          in: query
+          required: true
+      responses:
+        '200':
+          $ref: '#/components/responses/RespGetPage'
+      operationId: getUrl
+      summary: Get book page expirable URL
+  '/book/{isbn}':
+    get:
+      tags:
+        - Book
+      responses:
+        '200':
+          $ref: '#/components/responses/RespGetBookArray'
+      operationId: getBooks
+      summary: Get books info
+    post:
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              required:
+                - file
+              type: object
+              properties:
+                file:
+                  format: binary
+                  type: string
+      tags:
+        - Book
+      responses:
+        '201':
+          description: Book uploaded
+      operationId: uploadBook
+      summary: Upload book
+    parameters:
+      - name: isbn
+        schema:
+          type: string
+        in: path
+        required: true
+components:
+  schemas:
+    Book:
+      description: ''
+      type: object
+      properties:
+        isbn:
+          description: ''
+          type: string
+        processed:
+          description: ''
+          type: boolean
+        pageCount:
+          description: ''
+          type: integer
+    Page:
+      description: ''
+      type: object
+      properties:
+        isbn:
+          description: ''
+          type: string
+        url:
+          description: ''
+          type: string
+  responses:
+    RespGetBookArray:
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/Book'
+      description: ''
+    RespGetPage:
+      content:
+        application/json:
+          schema:
+            type: string
+      description: ''
   securitySchemes:
     jwt:
-      type: http
-      description: JWT Authentication
       scheme: bearer
-      bearerFormat: JWT
-    basic:
       type: http
-      description: Basic Authentication
-      scheme: basic
 security:
   - jwt: []
-  - basic: []
+tags:
+  - name: Book
+    description: ''
+  - name: Page
+    description: ''

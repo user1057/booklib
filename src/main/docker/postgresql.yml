@@ -6,6 +6,6 @@ services:
     #     - ~/volumes/jhipster/booklib/postgresql/:/var/lib/postgresql/data/
     environment:
       - POSTGRES_USER=booklib
-      - POSTGRES_PASSWORD=
+      - POSTGRES_PASSWORD=123
     ports:
       - 5432:5432
