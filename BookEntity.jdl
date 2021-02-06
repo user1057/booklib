@@ -4,7 +4,17 @@ entity Book{
     processed Boolean
 }
 
+entity BookContent {
+  data Blob required
+}
+
+relationship OneToOne {
+    Book{content} to BookContent{bookContent}
+}
+
 paginate Book with pagination
+
+filter Book
 
 // Use Data Transfert Objects (DTO)
 dto * with mapstruct

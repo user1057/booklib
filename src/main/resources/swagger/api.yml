@@ -3,27 +3,7 @@ info:
   title: Booklib
   version: 1.0.0
 paths:
-  /page:
-    get:
-      parameters:
-        - name: isbn
-          description: ''
-          schema:
-            type: string
-          in: query
-          required: true
-        - name: page
-          description: ''
-          schema:
-            type: integer
-          in: query
-          required: true
-      responses:
-        '200':
-          $ref: '#/components/responses/RespGetPage'
-      operationId: getUrl
-      summary: Get book page expirable URL
-  '/book/{isbn}':
+  /book:
     get:
       tags:
         - Book
@@ -46,18 +26,50 @@ paths:
                   type: string
       tags:
         - Book
+      parameters:
+        - name: isbn
+          description: ''
+          schema:
+            type: string
+          in: query
+          required: true
       responses:
         '201':
           description: Book uploaded
       operationId: uploadBook
       summary: Upload book
-    parameters:
-      - name: isbn
-        schema:
-          type: string
-        in: path
-        required: true
-  '/url/{isbn}':
+  /page:
+    get:
+      parameters:
+        - name: isbn
+          description: ''
+          schema:
+            type: string
+          in: query
+          required: true
+        - name: page
+          description: ''
+          schema:
+            type: integer
+          in: query
+          required: true
+      responses:
+        '200':
+          $ref: '#/components/responses/RespGetPage'
+      operationId: getPageUrl
+      summary: Get book page expirable URL
+  '/url/{hash}':
+    get:
+      responses:
+        '200':
+          content:
+            image/jpeg:
+              schema:
+                format: binary
+                type: string
+          description: Logo image in PNG format
+      operationId: getPageImage
+      summary: Get page image
     post:
       requestBody:
         content:
@@ -80,10 +92,10 @@ paths:
                 format: binary
                 type: string
           description: Logo image in PNG format
-      operationId: getPageImage
+      operationId: getPageImage2
       summary: Get page image
     parameters:
-      - name: isbn
+      - name: hash
         schema:
           type: string
         in: path
