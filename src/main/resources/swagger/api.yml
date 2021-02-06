@@ -57,6 +57,37 @@ paths:
           type: string
         in: path
         required: true
+  '/url/{isbn}':
+    post:
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              required:
+                - file
+              type: object
+              properties:
+                file:
+                  format: binary
+                  type: string
+      tags:
+        - Book
+      responses:
+        '200':
+          content:
+            image/jpeg:
+              schema:
+                format: binary
+                type: string
+          description: Logo image in PNG format
+      operationId: getPageImage
+      summary: Get page image
+    parameters:
+      - name: isbn
+        schema:
+          type: string
+        in: path
+        required: true
 components:
   schemas:
     Book:
