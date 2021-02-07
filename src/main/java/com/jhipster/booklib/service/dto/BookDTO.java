@@ -16,6 +16,8 @@ public class BookDTO implements Serializable {
 
     private Boolean processed;
 
+
+    private Long contentId;
     
     public Long getId() {
         return id;
@@ -49,6 +51,14 @@ public class BookDTO implements Serializable {
         this.processed = processed;
     }
 
+    public Long getContentId() {
+        return contentId;
+    }
+
+    public void setContentId(Long bookContentId) {
+        this.contentId = bookContentId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -77,6 +87,7 @@ public class BookDTO implements Serializable {
             ", isbn='" + getIsbn() + "'" +
             ", pageCount=" + getPageCount() +
             ", processed='" + isProcessed() + "'" +
+            ", contentId=" + getContentId() +
             "}";
     }
 }

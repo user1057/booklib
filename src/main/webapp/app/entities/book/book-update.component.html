@@ -28,6 +28,14 @@
                     <input type="checkbox" class="form-control" name="processed" id="field_processed"
                            formControlName="processed"/>
                 </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_content">Content</label>
+                    <select class="form-control" id="field_content" name="content" formControlName="contentId">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="bookContentOption.id" *ngFor="let bookContentOption of contents; trackBy: trackById">{{ bookContentOption.id }}</option>
+                    </select>
+                </div>
             </div>
 
             <div>

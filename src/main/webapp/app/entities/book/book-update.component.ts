@@ -4,9 +4,12 @@ import { HttpResponse } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { IBook, Book } from 'app/shared/model/book.model';
 import { BookService } from './book.service';
+import { IBookContent } from 'app/shared/model/book-content.model';
+import { BookContentService } from 'app/entities/book-content/book-content.service';
 
 @Component({
   selector: 'jhi-book-update',
@@ -14,19 +17,48 @@ import { BookService } from './book.service';
 })
 export class BookUpdateComponent implements OnInit {
   isSaving = false;
+  contents: IBookContent[] = [];
 
   editForm = this.fb.group({
     id: [],
     isbn: [],
     pageCount: [],
-    processed: []
+    processed: [],
+    contentId: []
   });
 
-  constructor(protected bookService: BookService, protected activatedRoute: ActivatedRoute, private fb: FormBuilder) {}
+  constructor(
+    protected bookService: BookService,
+    protected bookContentService: BookContentService,
+    protected activatedRoute: ActivatedRoute,
+    private fb: FormBuilder
+  ) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ book }) => {
       this.updateForm(book);
+
+      this.bookContentService
+        .query({ filter: 'bookcontent-is-null' })
+        .pipe(
+          map((res: HttpResponse<IBookContent[]>) => {
+            return res.body || [];
+          })
+        )
+        .subscribe((resBody: IBookContent[]) => {
+          if (!book.contentId) {
+            this.contents = resBody;
+          } else {
+            this.bookContentService
+              .find(book.contentId)
+              .pipe(
+                map((subRes: HttpResponse<IBookContent>) => {
+                  return subRes.body ? [subRes.body].concat(resBody) : resBody;
+                })
+              )
+              .subscribe((concatRes: IBookContent[]) => (this.contents = concatRes));
+          }
+        });
     });
   }
 
@@ -35,7 +67,8 @@ export class BookUpdateComponent implements OnInit {
       id: book.id,
       isbn: book.isbn,
       pageCount: book.pageCount,
-      processed: book.processed
+      processed: book.processed,
+      contentId: book.contentId
     });
   }
 
@@ -59,7 +92,8 @@ export class BookUpdateComponent implements OnInit {
       id: this.editForm.get(['id'])!.value,
       isbn: this.editForm.get(['isbn'])!.value,
       pageCount: this.editForm.get(['pageCount'])!.value,
-      processed: this.editForm.get(['processed'])!.value
+      processed: this.editForm.get(['processed'])!.value,
+      contentId: this.editForm.get(['contentId'])!.value
     };
   }
 
@@ -77,5 +111,9 @@ export class BookUpdateComponent implements OnInit {
 
   protected onSaveError(): void {
     this.isSaving = false;
+  }
+
+  trackById(index: number, item: IBookContent): any {
+    return item.id;
   }
 }

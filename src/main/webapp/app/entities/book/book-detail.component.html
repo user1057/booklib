@@ -20,6 +20,12 @@
                 <dd>
                     <span>{{ book.processed }}</span>
                 </dd>
+                <dt><span>Content</span></dt>
+                <dd>
+                    <div *ngIf="book.contentId">
+                        <a [routerLink]="['/book-content', book.contentId, 'view']">{{ book.contentId }}</a>
+                    </div>
+                </dd>
             </dl>
 
             <button type="submit"

@@ -8,11 +8,15 @@ entity BookContent {
   data Blob required
 }
 
+entity PageContent{
+    isbn String
+    page Integer
+    data Blob
+}
+
 relationship OneToOne {
     Book{content} to BookContent{bookContent}
 }
-
-paginate Book with pagination
 
 filter Book
 

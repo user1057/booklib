@@ -21,11 +21,12 @@
     <div class="table-responsive" id="entities" *ngIf="books?.length > 0">
         <table class="table table-striped" aria-describedby="page-heading">
             <thead>
-                <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
-                    <th scope="col"  jhiSortBy="id"><span>ID</span> <fa-icon icon="sort"></fa-icon></th>
-                    <th scope="col"  jhiSortBy="isbn"><span>Isbn</span> <fa-icon icon="sort"></fa-icon></th>
-                    <th scope="col"  jhiSortBy="pageCount"><span>Page Count</span> <fa-icon icon="sort"></fa-icon></th>
-                    <th scope="col"  jhiSortBy="processed"><span>Processed</span> <fa-icon icon="sort"></fa-icon></th>
+                <tr>
+                    <th scope="col" ><span>ID</span></th>
+                    <th scope="col" ><span>Isbn</span></th>
+                    <th scope="col" ><span>Page Count</span></th>
+                    <th scope="col" ><span>Processed</span></th>
+                    <th scope="col" ><span>Content</span></th>
                     <th scope="col"></th>
                 </tr>
             </thead>
@@ -35,6 +36,11 @@
                     <td>{{ book.isbn }}</td>
                     <td>{{ book.pageCount }}</td>
                     <td>{{ book.processed }}</td>
+                    <td>
+                        <div *ngIf="book.contentId">
+                            <a [routerLink]="['/book-content', book.contentId , 'view']" >{{ book.contentId }}</a>
+                        </div>
+                    </td>
                     <td class="text-right">
                         <div class="btn-group">
                             <button type="submit"
@@ -61,15 +67,5 @@
                 </tr>
             </tbody>
         </table>
-    </div>
-
-    <div *ngIf="books?.length > 0">
-        <div class="row justify-content-center">
-            <jhi-item-count [page]="page" [total]="totalItems" [itemsPerPage]="itemsPerPage"></jhi-item-count>
-        </div>
-
-        <div class="row justify-content-center">
-            <ngb-pagination [collectionSize]="totalItems" [(page)]="ngbPaginationPage" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage($event)"></ngb-pagination>
-        </div>
     </div>
 </div>

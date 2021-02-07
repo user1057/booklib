@@ -867,6 +867,7 @@
                                 <supportingFilesToGenerate>ApiUtil.java</supportingFilesToGenerate>
                                 <importMappings>Problem=org.zalando.problem.Problem</importMappings>
                                 <skipValidateSpec>false</skipValidateSpec>
+                                <modelNameSuffix>MDL</modelNameSuffix>
                                 <configOptions>
                                     <delegatePattern>true</delegatePattern>
                                     <title>booklib</title>

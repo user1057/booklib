@@ -32,6 +32,10 @@ public class Book implements Serializable {
     @Column(name = "processed")
     private Boolean processed;
 
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @JoinColumn(unique = true)
+    private BookContent content;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -78,6 +82,19 @@ public class Book implements Serializable {
 
     public void setProcessed(Boolean processed) {
         this.processed = processed;
+    }
+
+    public BookContent getContent() {
+        return content;
+    }
+
+    public Book content(BookContent bookContent) {
+        this.content = bookContent;
+        return this;
+    }
+
+    public void setContent(BookContent bookContent) {
+        this.content = bookContent;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

@@ -1,13 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { HttpHeaders, HttpResponse } from '@angular/common/http';
-import { ActivatedRoute, Router } from '@angular/router';
+import { HttpResponse } from '@angular/common/http';
 import { Subscription } from 'rxjs';
 import { JhiEventManager } from 'ng-jhipster';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { IBook } from 'app/shared/model/book.model';
-
-import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
 import { BookService } from './book.service';
 import { BookDeleteDialogComponent } from './book-delete-dialog.component';
 
@@ -18,44 +15,15 @@ import { BookDeleteDialogComponent } from './book-delete-dialog.component';
 export class BookComponent implements OnInit, OnDestroy {
   books?: IBook[];
   eventSubscriber?: Subscription;
-  totalItems = 0;
-  itemsPerPage = ITEMS_PER_PAGE;
-  page!: number;
-  predicate!: string;
-  ascending!: boolean;
-  ngbPaginationPage = 1;
 
-  constructor(
-    protected bookService: BookService,
-    protected activatedRoute: ActivatedRoute,
-    protected router: Router,
-    protected eventManager: JhiEventManager,
-    protected modalService: NgbModal
-  ) {}
+  constructor(protected bookService: BookService, protected eventManager: JhiEventManager, protected modalService: NgbModal) {}
 
-  loadPage(page?: number): void {
-    const pageToLoad: number = page || this.page;
-
-    this.bookService
-      .query({
-        page: pageToLoad - 1,
-        size: this.itemsPerPage,
-        sort: this.sort()
-      })
-      .subscribe(
-        (res: HttpResponse<IBook[]>) => this.onSuccess(res.body, res.headers, pageToLoad),
-        () => this.onError()
-      );
+  loadAll(): void {
+    this.bookService.query().subscribe((res: HttpResponse<IBook[]>) => (this.books = res.body || []));
   }
 
   ngOnInit(): void {
-    this.activatedRoute.data.subscribe(data => {
-      this.page = data.pagingParams.page;
-      this.ascending = data.pagingParams.ascending;
-      this.predicate = data.pagingParams.predicate;
-      this.ngbPaginationPage = data.pagingParams.page;
-      this.loadPage();
-    });
+    this.loadAll();
     this.registerChangeInBooks();
   }
 
@@ -71,36 +39,11 @@ export class BookComponent implements OnInit, OnDestroy {
   }
 
   registerChangeInBooks(): void {
-    this.eventSubscriber = this.eventManager.subscribe('bookListModification', () => this.loadPage());
+    this.eventSubscriber = this.eventManager.subscribe('bookListModification', () => this.loadAll());
   }
 
   delete(book: IBook): void {
     const modalRef = this.modalService.open(BookDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.book = book;
-  }
-
-  sort(): string[] {
-    const result = [this.predicate + ',' + (this.ascending ? 'asc' : 'desc')];
-    if (this.predicate !== 'id') {
-      result.push('id');
-    }
-    return result;
-  }
-
-  protected onSuccess(data: IBook[] | null, headers: HttpHeaders, page: number): void {
-    this.totalItems = Number(headers.get('X-Total-Count'));
-    this.page = page;
-    this.router.navigate(['/book'], {
-      queryParams: {
-        page: this.page,
-        size: this.itemsPerPage,
-        sort: this.predicate + ',' + (this.ascending ? 'asc' : 'desc')
-      }
-    });
-    this.books = data || [];
-  }
-
-  protected onError(): void {
-    this.ngbPaginationPage = this.page;
   }
 }
