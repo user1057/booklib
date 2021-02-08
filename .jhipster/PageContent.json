@@ -1,0 +1,30 @@
+{
+    "name": "PageContent",
+    "fields": [
+        {
+            "fieldName": "isbn",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "page",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "data",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "any"
+        }
+    ],
+    "relationships": [],
+    "changelogDate": "20210207131700",
+    "entityTableName": "page_content",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": true,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

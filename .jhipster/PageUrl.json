@@ -1,0 +1,33 @@
+{
+    "name": "PageUrl",
+    "fields": [
+        {
+            "fieldName": "isbn",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "page",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "hash",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "startTime",
+            "fieldType": "Instant"
+        }
+    ],
+    "relationships": [],
+    "changelogDate": "20210207131600",
+    "entityTableName": "page_url",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": true,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

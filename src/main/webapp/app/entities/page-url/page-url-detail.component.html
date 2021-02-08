@@ -1,0 +1,42 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="pageUrl">
+            <h2><span>Page Url</span> {{ pageUrl.id }}</h2>
+
+            <hr>
+
+            <jhi-alert-error></jhi-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span>Isbn</span></dt>
+                <dd>
+                    <span>{{ pageUrl.isbn }}</span>
+                </dd>
+                <dt><span>Page</span></dt>
+                <dd>
+                    <span>{{ pageUrl.page }}</span>
+                </dd>
+                <dt><span>Hash</span></dt>
+                <dd>
+                    <span>{{ pageUrl.hash }}</span>
+                </dd>
+                <dt><span>Start Time</span></dt>
+                <dd>
+                    <span>{{ pageUrl.startTime }}</span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/page-url', pageUrl.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

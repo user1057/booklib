@@ -8,6 +8,13 @@ entity BookContent {
   data Blob required
 }
 
+entity PageUrl{
+    isbn String
+    page Integer
+    hash String
+    startTime Instant
+}
+
 entity PageContent{
     isbn String
     page Integer
@@ -18,7 +25,7 @@ relationship OneToOne {
     Book{content} to BookContent{bookContent}
 }
 
-filter Book
+filter Book, PageUrl, PageContent
 
 // Use Data Transfert Objects (DTO)
 dto * with mapstruct

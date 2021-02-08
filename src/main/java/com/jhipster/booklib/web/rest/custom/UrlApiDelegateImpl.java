@@ -1,7 +1,14 @@
 package com.jhipster.booklib.web.rest.custom;
 
+import com.jhipster.booklib.service.PageContentQueryService;
+import com.jhipster.booklib.service.PageUrlQueryService;
+import com.jhipster.booklib.service.dto.PageContentCriteria;
+import com.jhipster.booklib.service.dto.PageContentDTO;
+import com.jhipster.booklib.service.dto.PageUrlCriteria;
+import com.jhipster.booklib.service.dto.PageUrlDTO;
 import com.jhipster.booklib.web.api.UrlApiDelegate;
-import com.spire.pdf.PdfDocument;
+import io.github.jhipster.service.filter.IntegerFilter;
+import io.github.jhipster.service.filter.StringFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,14 +19,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.NativeWebRequest;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 @Service
 public class UrlApiDelegateImpl implements UrlApiDelegate {
@@ -29,70 +32,65 @@ public class UrlApiDelegateImpl implements UrlApiDelegate {
     private String applicationName;
 
     private final NativeWebRequest request;
+    private final PageUrlQueryService pageUrlQueryService;
+    private final PageContentQueryService pageContentQueryService;
 
-    public UrlApiDelegateImpl(NativeWebRequest request){
+    public UrlApiDelegateImpl(NativeWebRequest request, PageUrlQueryService pageUrlQueryService, PageContentQueryService pageContentQueryService){
         this.request = request;
+        this.pageUrlQueryService = pageUrlQueryService;
+        this.pageContentQueryService = pageContentQueryService;
     }
 
-/*    @Override
-    public ResponseEntity<Resource> getPageImage(String isbn, MultipartFile file) {
+    @Override
+    public ResponseEntity<Resource> getPageImage(String hash) {
+        log.info("Getting page image for hash: " + hash);
 
+        PageUrlCriteria pageUrlCriteria = new PageUrlCriteria();
+        StringFilter hashFilter = new StringFilter();
+        hashFilter.setEquals(hash);
+        pageUrlCriteria.setHash(hashFilter);
 
-        //provjeri isbn
-        //samo spremi u bazu
-        //nakon spremanja u bazu posalji u kafku isbn knjige koju treba obradit
+        List<PageUrlDTO> pageUrlDTOList = pageUrlQueryService.findByCriteria(pageUrlCriteria);
 
-        PdfDocument doc = new PdfDocument();
-        try {
-            doc.loadFromStream(file.getInputStream()); // .loadFromFile("Sample.pdf");
-        } catch (IOException e) {
-            e.printStackTrace();
+        if(pageUrlDTOList.size()==1){
+            PageUrlDTO pageUrlDTO = pageUrlDTOList.get(0);
+
+            if(urlExpired(pageUrlDTO)){
+                return ResponseEntity.status(410).build();
+            }
+
+            PageContentCriteria pageContentCriteria = new PageContentCriteria();
+            StringFilter isbnFilter = new StringFilter();
+            isbnFilter.setEquals(pageUrlDTO.getIsbn());
+            IntegerFilter pageFilter = new IntegerFilter();
+            pageFilter.setEquals(pageUrlDTO.getPage());
+            pageContentCriteria.setIsbn(isbnFilter);
+            pageContentCriteria.setPage(pageFilter);
+
+            List<PageContentDTO> pageContentDTOS = pageContentQueryService.findByCriteria(pageContentCriteria);
+            if(pageContentDTOS.size()==1){
+                PageContentDTO pageContentDTO = pageContentDTOS.get(0);
+                InputStream is = new ByteArrayInputStream(pageContentDTO.getData());
+
+                InputStreamResource resource = new InputStreamResource(is);
+
+                HttpHeaders headers = new HttpHeaders();
+                return new ResponseEntity<Resource>(resource, headers, HttpStatus.OK);
+
+            }else{
+                return ResponseEntity.notFound().build();
+            }
+
+        }else{
+            return ResponseEntity.notFound().build();
         }
+    }
 
-        BufferedImage image = doc.saveAsImage(0);
-
-
-        *//*File filetemp = new File( String.format("ToImage-img-%d.png", 0));
-        try {
-            ImageIO.write(image, "JPG", filetemp);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*//*
-
-        int w = image.getWidth();
-        int h = image.getHeight();
-        BufferedImage newImage = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
-        int[] rgb = image.getRGB(0, 0, w, h, null, 0, w);
-        newImage.setRGB(0, 0, w, h, rgb, 0, w);
-
-
-        ByteArrayOutputStream os = new ByteArrayOutputStream();
-        try {
-            ImageIO.write(newImage,  "jpg", os);                          // Passing: ​(RenderedImage im, String formatName, OutputStream output)
-        } catch (IOException e) {
-            e.printStackTrace();
+    private boolean urlExpired(PageUrlDTO pageUrlDTO){
+        long diff = System.currentTimeMillis() - pageUrlDTO.getStartTime().toEpochMilli();
+        if(diff>(5*60*1000)){
+            return true;
         }
-        InputStream is = new ByteArrayInputStream(os.toByteArray());
-
-*//*        //save every PDF to .png image
-        BufferedImage image;
-        for (int i = 0; i < doc.getPages().getCount(); i++) {
-            image = doc.saveAsImage(i);
-            File filetemp = new File( String.format("ToImage-img-%d.png", i));
-            ImageIO.write(image, "PNG", file);
-        }*//*
-
-        doc.close();
-
-        InputStreamResource resource = new InputStreamResource(is);
-*//*        return ResponseEntity.ok()
-            //.headers(headers)
-            .contentLength(file.getSize())
-            .contentType(MediaType.IMAGE_JPEG)
-            .body(resource);*//*
-
-        HttpHeaders headers = new HttpHeaders();
-        //Resource resource = new ServletContextResource(servletContext, "/WEB-INF/images/image-example.jpg");
-        return new ResponseEntity<Resource>(resource, headers, HttpStatus.OK);
-    }*/
+        return false;
+    }
 }

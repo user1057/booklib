@@ -13,7 +13,7 @@
         <repository>
             <id>com.e-iceblue</id>
             <name>e-iceblue</name>
-            <url>http://repo.e-iceblue.com/nexus/content/groups/public/</url>
+            <url>https://repo.e-iceblue.com/nexus/content/groups/public/</url>
         </repository>
 
         <!-- jhipster-needle-maven-repository -->
@@ -93,6 +93,9 @@
         <jacoco.itReportFile>${jacoco.itReportFolder}/integrationTest.exec</jacoco.itReportFile>
         <junit.utReportFolder>${project.testresult.directory}/test</junit.utReportFolder>
         <junit.itReportFolder>${project.testresult.directory}/integrationTest</junit.itReportFolder>
+
+        <maven.test.skip>true</maven.test.skip>
+
         <!-- jhipster-needle-maven-property -->
     </properties>
 
@@ -629,6 +632,10 @@
                         </from>
                         <to>
                             <image>booklib:latest</image>
+                            <tags>
+                                <tag>${maven.build.timestamp}</tag>
+                                <tag>latest</tag>
+                            </tags>
                         </to>
                         <container>
                             <entrypoint>

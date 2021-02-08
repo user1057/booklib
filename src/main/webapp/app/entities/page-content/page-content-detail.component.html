@@ -1,0 +1,41 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="pageContent">
+            <h2><span>Page Content</span> {{ pageContent.id }}</h2>
+
+            <hr>
+
+            <jhi-alert-error></jhi-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span>Isbn</span></dt>
+                <dd>
+                    <span>{{ pageContent.isbn }}</span>
+                </dd>
+                <dt><span>Page</span></dt>
+                <dd>
+                    <span>{{ pageContent.page }}</span>
+                </dd>
+                <dt><span>Data</span></dt>
+                <dd>
+                    <div *ngIf="pageContent.data">
+                        <a (click)="openFile(pageContent?.dataContentType!, pageContent?.data)">open</a>
+                        {{ pageContent.dataContentType }}, {{ byteSize(pageContent.data) }}
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/page-content', pageContent.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

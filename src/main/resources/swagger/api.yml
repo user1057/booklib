@@ -40,6 +40,8 @@ paths:
       summary: Upload book
   /page:
     get:
+      tags:
+        - Page
       parameters:
         - name: isbn
           description: ''
@@ -60,6 +62,8 @@ paths:
       summary: Get book page expirable URL
   '/url/{hash}':
     get:
+      tags:
+        - Url
       responses:
         '200':
           content:
@@ -69,30 +73,6 @@ paths:
                 type: string
           description: Logo image in PNG format
       operationId: getPageImage
-      summary: Get page image
-    post:
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              required:
-                - file
-              type: object
-              properties:
-                file:
-                  format: binary
-                  type: string
-      tags:
-        - Book
-      responses:
-        '200':
-          content:
-            image/jpeg:
-              schema:
-                format: binary
-                type: string
-          description: Logo image in PNG format
-      operationId: getPageImage2
       summary: Get page image
     parameters:
       - name: hash
@@ -125,6 +105,9 @@ components:
         url:
           description: ''
           type: string
+        page:
+          description: ''
+          type: integer
   responses:
     RespGetBookArray:
       content:
@@ -138,7 +121,7 @@ components:
       content:
         application/json:
           schema:
-            type: string
+            $ref: '#/components/schemas/Page'
       description: ''
   securitySchemes:
     jwt:
@@ -150,4 +133,6 @@ tags:
   - name: Book
     description: ''
   - name: Page
+    description: ''
+  - name: Url
     description: ''

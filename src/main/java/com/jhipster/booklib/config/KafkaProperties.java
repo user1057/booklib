@@ -1,6 +1,8 @@
 package com.jhipster.booklib.config;
 
+import org.apache.kafka.clients.admin.NewTopic;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.HashMap;
@@ -11,6 +13,8 @@ import java.util.Map;
 public class KafkaProperties {
 
     private String bootStrapServers = "localhost:9092";
+
+    public static String bookTopic = "BOOK_TOPIC";
 
     private Map<String, String> consumer = new HashMap<>();
 
@@ -28,6 +32,8 @@ public class KafkaProperties {
         Map<String, Object> properties = new HashMap<>(this.consumer);
         if (!properties.containsKey("bootstrap.servers")) {
             properties.put("bootstrap.servers", this.bootStrapServers);
+            properties.put("max.poll.interval.ms", 300000);
+            properties.put("max.poll.records", 1);
         }
         return properties;
     }
@@ -47,4 +53,5 @@ public class KafkaProperties {
     public void setProducer(Map<String, String> producer) {
         this.producer = producer;
     }
+
 }
