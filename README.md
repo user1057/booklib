@@ -22,7 +22,7 @@ Hibernate is doing ORM and domain objects are updated after generation(with impo
 
 ## PDF conversion
 
-[Free Spire.PDF for Java] has limitation to 10 pages:
+[Free Spire.PDF for Java] is used for conversion of pages to images and has a limitation of 10 pages.
 
 ## Open Api design
 
@@ -32,11 +32,11 @@ Hibernate is doing ORM and domain objects are updated after generation(with impo
 
 ## Docker
 
-Image located at:
+Image is prebuilt and located at:
 
     docker.io/bsdockerzg/booklib
 
-built using:
+Building and pushing is done using:
 
     ./mvnw -Pprod compile -Djib.to.image=docker.io/bsdockerzg/booklib:latest -Djib.to.auth.username=bsdockerzg -Djib.to.auth.password=XXX jib:build
 
@@ -51,7 +51,26 @@ To start application using docker:
 
 ## Postman requests
 
-Available for import in Postman in project root in `Booklib.postman_collection.json`
+There is a collection of requests available for import in Postman. The import file is located in project root file `Booklib.postman_collection.json`. Enviroment variables `protocol`, `host_`, `username`, `password` and global variables `token` are used.
+
+Collection has a authentication script so every call automatically prefetches Bearer token.
+
+    const getTaxAccessToken={
+      url: pm.environment.get("protocol")+'://'+pm.environment.get("host_")+'/api/authenticate',
+      method: "post",
+      body: {
+         mode: 'raw',
+         raw: JSON.stringify({'password': pm.environment.get("password"), 'rememberme': true, 'username':pm.environment.get("username")})
+      },
+      header: {
+          'Content-Type': 'application/json'
+      }
+    };
+    pm.sendRequest(getTaxAccessToken, function (err, response) {
+      pm.globals.set("token", response.json()['id_token']);
+    });
+
+Single authentication token fetch request is also included.
 
 Authenticate:
 
