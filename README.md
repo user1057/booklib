@@ -36,10 +36,10 @@ Image located at:
 
     docker.io/bsdockerzg/booklib
 
-built using:  
-  
- ./mvnw -Pprod compile -Djib.to.image=docker.io/bsdockerzg/booklib:latest -Djib.to.auth.username=bsdockerzg -Djib.to.auth.password=XXX jib:buil
-  
+built using:
+
+    ./mvnw -Pprod compile -Djib.to.image=docker.io/bsdockerzg/booklib:latest -Djib.to.auth.username=bsdockerzg -Djib.to.auth.password=XXX jib:build
+
 To start application using docker:
 
     export PORT=8080
@@ -54,41 +54,41 @@ To start application using docker:
 Available for import in Postman in project root in `Booklib.postman_collection.json`
 
 Authenticate:
-  
- curl --location --request POST 'http://localhost:1234/api/authenticate' \
- --header 'Content-Type: application/json' \
- --data-raw '{
-"password": "admin",
-"rememberme": true,
-"username": "admin"
-}'
-  
+
+    curl --location --request POST 'http://localhost:1234/api/authenticate' \
+        --header 'Content-Type: application/json' \
+        --data-raw '{
+            "password": "admin",
+            "rememberme": true,
+            "username": "admin"
+        }'
+
 Upload book:
-  
- curl --location --request POST 'http://localhost:1234/book' \
- --header 'Accept-Encoding: gzip, deflate' \
- --header 'Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImF1dGgiOiJST0xFX0FETUlOLFJPTEVfVVNFUiIsImV4cCI6MTYxMjgzMjY4MX0.51P3rCpHg4Y46g4t6yZYG2qpU7moohv-ijxgHfEK3WHTxd90V5Rc24RkpqIHk1ghay54neJsFliQ-cAwe6dabw' \
- --form 'file=@"/home/bobo/Downloads/sample.pdf"' \
- --form 'isbn="978-1-4949-3461-3"'
-  
+
+    curl --location --request POST 'http://localhost:1234/book' \
+        --header 'Accept-Encoding: gzip, deflate' \
+        --header 'Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImF1dGgiOiJST0xFX0FETUlOLFJPTEVfVVNFUiIsImV4cCI6MTYxMjgzMjY4MX0.51P3rCpHg4Y46g4t6yZYG2qpU7moohv-ijxgHfEK3WHTxd90V5Rc24RkpqIHk1ghay54neJsFliQ-cAwe6dabw' \
+        --form 'file=@"/home/bobo/Downloads/sample.pdf"' \
+        --form 'isbn="978-1-4949-3461-3"'
+
 Get all books:
-  
- curl --location --request GET 'http://localhost:1234/book' \
- --header 'Accept-Encoding: gzip, deflate' \
- --header 'Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImF1dGgiOiJST0xFX0FETUlOLFJPTEVfVVNFUiIsImV4cCI6MTYxMjgzOTYwNn0.dpf3Y8LWyyqzHKNJCkHOXQgoQ5d-mkGhmTwoKsZLprPyn6ii6z9ATadlohyMy9VV2jufzUaw11OgotTH3NUU9w'
-  
+
+    curl --location --request GET 'http://localhost:1234/book' \
+        --header 'Accept-Encoding: gzip, deflate' \
+        --header 'Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImF1dGgiOiJST0xFX0FETUlOLFJPTEVfVVNFUiIsImV4cCI6MTYxMjgzOTYwNn0.dpf3Y8LWyyqzHKNJCkHOXQgoQ5d-mkGhmTwoKsZLprPyn6ii6z9ATadlohyMy9VV2jufzUaw11OgotTH3NUU9w'
+
 Get page url:
-  
- curl --location --request GET 'http://localhost:1234/page' \
- --header 'Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImF1dGgiOiJST0xFX0FETUlOLFJPTEVfVVNFUiIsImV4cCI6MTYxMjgzOTc3Mn0.f8omegjk5TYsf0kpdNzFfwCThMDqI92woRHXASgnM987qEUtU10PKtAIPa8teOTLSrH9tpaYAt4QQbPx-ab35A' \
- --form 'isbn="978-1-4949-3461-3"' \
- --form 'page="0"'
-  
+
+    curl --location --request GET 'http://localhost:1234/page' \
+        --header 'Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImF1dGgiOiJST0xFX0FETUlOLFJPTEVfVVNFUiIsImV4cCI6MTYxMjgzOTc3Mn0.f8omegjk5TYsf0kpdNzFfwCThMDqI92woRHXASgnM987qEUtU10PKtAIPa8teOTLSrH9tpaYAt4QQbPx-ab35A' \
+        --form 'isbn="978-1-4949-3461-3"' \
+        --form 'page="0"'
+
 Get page image:
-  
- curl --location --request GET 'http://localhost:1234/url/113ff1e6-cc5c-497d-bcfb-5cdf2a9788a0' \
- --header 'Accept-Encoding: gzip, deflate' \
- --header 'Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImF1dGgiOiJST0xFX0FETUlOLFJPTEVfVVNFUiIsImV4cCI6MTYxMjgzOTc4Nn0.yK2Bln-waeP4sN9jBh30zUcZXNfsyfVndpIwzg6DGzZk2GEK3xalHPMFhx0G3oNa-GgV2wSs8C2ZsYMiiX8CvQ'
+
+    curl --location --request GET 'http://localhost:1234/url/113ff1e6-cc5c-497d-bcfb-5cdf2a9788a0' \
+        --header 'Accept-Encoding: gzip, deflate' \
+        --header 'Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImF1dGgiOiJST0xFX0FETUlOLFJPTEVfVVNFUiIsImV4cCI6MTYxMjgzOTc4Nn0.yK2Bln-waeP4sN9jBh30zUcZXNfsyfVndpIwzg6DGzZk2GEK3xalHPMFhx0G3oNa-GgV2wSs8C2ZsYMiiX8CvQ'
 
 ## Notes
 
