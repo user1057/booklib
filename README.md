@@ -32,13 +32,63 @@ Hibernate is doing ORM and domain objects are updated after generation(with impo
 
 ## Docker
 
-To start the application from docker images on port 8080 run in project root:
+Image located at:
 
+    docker.io/bsdockerzg/booklib
+
+built using:  
+  
+ ./mvnw -Pprod compile -Djib.to.image=docker.io/bsdockerzg/booklib:latest -Djib.to.auth.username=bsdockerzg -Djib.to.auth.password=XXX jib:buil
+  
+To start application using docker:
+
+    export PORT=8080
     docker-compose up
 
-Or on port 1234
+    OR
 
     PORT=1234 docker-compose up
+
+## Postman requests
+
+Available for import in Postman in project root in `Booklib.postman_collection.json`
+
+Authenticate:
+  
+ curl --location --request POST 'http://localhost:1234/api/authenticate' \
+ --header 'Content-Type: application/json' \
+ --data-raw '{
+"password": "admin",
+"rememberme": true,
+"username": "admin"
+}'
+  
+Upload book:
+  
+ curl --location --request POST 'http://localhost:1234/book' \
+ --header 'Accept-Encoding: gzip, deflate' \
+ --header 'Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImF1dGgiOiJST0xFX0FETUlOLFJPTEVfVVNFUiIsImV4cCI6MTYxMjgzMjY4MX0.51P3rCpHg4Y46g4t6yZYG2qpU7moohv-ijxgHfEK3WHTxd90V5Rc24RkpqIHk1ghay54neJsFliQ-cAwe6dabw' \
+ --form 'file=@"/home/bobo/Downloads/sample.pdf"' \
+ --form 'isbn="978-1-4949-3461-3"'
+  
+Get all books:
+  
+ curl --location --request GET 'http://localhost:1234/book' \
+ --header 'Accept-Encoding: gzip, deflate' \
+ --header 'Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImF1dGgiOiJST0xFX0FETUlOLFJPTEVfVVNFUiIsImV4cCI6MTYxMjgzOTYwNn0.dpf3Y8LWyyqzHKNJCkHOXQgoQ5d-mkGhmTwoKsZLprPyn6ii6z9ATadlohyMy9VV2jufzUaw11OgotTH3NUU9w'
+  
+Get page url:
+  
+ curl --location --request GET 'http://localhost:1234/page' \
+ --header 'Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImF1dGgiOiJST0xFX0FETUlOLFJPTEVfVVNFUiIsImV4cCI6MTYxMjgzOTc3Mn0.f8omegjk5TYsf0kpdNzFfwCThMDqI92woRHXASgnM987qEUtU10PKtAIPa8teOTLSrH9tpaYAt4QQbPx-ab35A' \
+ --form 'isbn="978-1-4949-3461-3"' \
+ --form 'page="0"'
+  
+Get page image:
+  
+ curl --location --request GET 'http://localhost:1234/url/113ff1e6-cc5c-497d-bcfb-5cdf2a9788a0' \
+ --header 'Accept-Encoding: gzip, deflate' \
+ --header 'Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImF1dGgiOiJST0xFX0FETUlOLFJPTEVfVVNFUiIsImV4cCI6MTYxMjgzOTc4Nn0.yK2Bln-waeP4sN9jBh30zUcZXNfsyfVndpIwzg6DGzZk2GEK3xalHPMFhx0G3oNa-GgV2wSs8C2ZsYMiiX8CvQ'
 
 ## Notes
 
@@ -51,7 +101,8 @@ File size limited to 30MB.
 Node v12.16.1  
 NPM 6.14.2  
 JHipster 6.10.5  
-  
-[JHipster]: https://www.jhipster.tech
-[Free Spire.PDF for Java]: https://www.e-iceblue.com/Introduce/free-pdf-for-java.html#.YCAJ6ei2lnI
-[Apicurio]: https://www.apicur.io/
+Docker 1.25
+
+[jhipster]: https://www.jhipster.tech
+[free spire.pdf for java]: https://www.e-iceblue.com/Introduce/free-pdf-for-java.html#.YCAJ6ei2lnI
+[apicurio]: https://www.apicur.io/

@@ -1,0 +1,291 @@
+{
+  "info": {
+    "_postman_id": "a8729110-4b31-42d2-a2fe-59638023abf8",
+    "name": "Booklib",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "create book",
+      "protocolProfileBehavior": {
+        "disabledSystemHeaders": {
+          "accept": true,
+          "accept-encoding": true
+        }
+      },
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "multipart/form-data;",
+            "type": "text",
+            "disabled": true
+          },
+          {
+            "key": "Accept",
+            "value": "application/json, text/plain, */*",
+            "type": "text",
+            "disabled": true
+          },
+          {
+            "key": "Accept-Encoding",
+            "value": "gzip, deflate",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "file",
+              "contentType": "",
+              "type": "file",
+              "src": "/home/bobo/Downloads/sample.pdf"
+            },
+            {
+              "key": "isbn",
+              "value": "978-1-4949-3461-3",
+              "type": "text"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{protocol}}://{{host_}}/book",
+          "protocol": "{{protocol}}",
+          "host": ["{{host_}}"],
+          "path": ["book"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "get all books",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true,
+        "disabledSystemHeaders": {
+          "accept": true,
+          "accept-encoding": true
+        }
+      },
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "type": "text",
+            "value": "multipart/form-data;",
+            "disabled": true
+          },
+          {
+            "key": "Accept",
+            "type": "text",
+            "value": "application/json, text/plain, */*",
+            "disabled": true
+          },
+          {
+            "key": "Accept-Encoding",
+            "type": "text",
+            "value": "gzip, deflate"
+          }
+        ],
+        "body": {
+          "mode": "formdata",
+          "formdata": []
+        },
+        "url": {
+          "raw": "{{protocol}}://{{host_}}/book",
+          "protocol": "{{protocol}}",
+          "host": ["{{host_}}"],
+          "path": ["book"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "url",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true,
+        "disabledSystemHeaders": {
+          "accept": true,
+          "accept-encoding": true
+        }
+      },
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "type": "text",
+            "value": "multipart/form-data;",
+            "disabled": true
+          },
+          {
+            "key": "Accept",
+            "type": "text",
+            "value": "application/json, text/plain, */*",
+            "disabled": true
+          },
+          {
+            "key": "Accept-Encoding",
+            "type": "text",
+            "value": "gzip, deflate"
+          }
+        ],
+        "body": {
+          "mode": "formdata",
+          "formdata": []
+        },
+        "url": {
+          "raw": "{{protocol}}://{{host_}}/url/f225d394-2f5b-4c1f-a40f-20adada01d21",
+          "protocol": "{{protocol}}",
+          "host": ["{{host_}}"],
+          "path": ["url", "f225d394-2f5b-4c1f-a40f-20adada01d21"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "page",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "isbn",
+              "value": "978-1-4949-3461-3",
+              "type": "text"
+            },
+            {
+              "key": "page",
+              "value": "0",
+              "type": "text"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{protocol}}://{{host_}}/page",
+          "protocol": "{{protocol}}",
+          "host": ["{{host_}}"],
+          "path": ["page"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "auth",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "username",
+              "value": "admin",
+              "type": "text"
+            },
+            {
+              "key": "password",
+              "value": "admin",
+              "type": "text"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{protocol}}://{{host_}}/api/authenticate",
+          "protocol": "{{protocol}}",
+          "host": ["{{host_}}"],
+          "path": ["api", "authenticate"]
+        }
+      },
+      "response": []
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "const getTaxAccessToken={",
+          "  url: pm.environment.get(\"protocol\")+'://'+pm.environment.get(\"host_\")+'/api/authenticate',",
+          "  method: \"post\",",
+          "  body: {",
+          "     mode: 'raw',",
+          "     raw: JSON.stringify({'password': pm.environment.get(\"password\"), 'rememberme': true, 'username':pm.environment.get(\"username\")})",
+          "  },",
+          "  header: {",
+          "      'Content-Type': 'application/json'",
+          "  }",
+          "};",
+          "pm.sendRequest(getTaxAccessToken, function (err, response) {",
+          "  pm.globals.set(\"token\", response.json()['id_token']);",
+          "});"
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [""]
+      }
+    }
+  ]
+}
